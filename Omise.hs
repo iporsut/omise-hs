@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE RecordWildCards   #-}
 
-module OmiseClient
+module Omise
   ( Card (..)
   , TokenReq (..)
   , ChargeReq (..)
