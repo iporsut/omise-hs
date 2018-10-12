@@ -1,0 +1,28 @@
+name:                omise-hs
+version:             0.1.0.0
+github:              "iporsut/omise-hs"
+author:              "Weerasak Chongnguluam"
+maintainer:          "singpor@gmail.com"
+
+extra-source-files:
+- README.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/iporsut/omise-hs>
+
+dependencies:
+- base >= 4.7 && < 6
+- aeson
+- bytestring
+- http-conduit
+- unordered-containers
+- text
+ 
+library:
+  source-dirs: .

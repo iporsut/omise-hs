@@ -1,24 +1,37 @@
-name:                omise-hs
-version:             0.1.0.0
-homepage:            https://github.com/iporsut/omise-hs
-author:              Weerasak Chongnguluam
-maintainer:          singpor@gmail.com
-category:            API
-build-type:          Simple
-extra-source-files:  README.md
-cabal-version:       >=1.10
+-- This file has been generated from package.yaml by hpack version 0.28.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: ee2f26f152a9a2d6909df2b7fea95e8cc0662d09bcb74b6f8ba29c7b09aab06e
 
-library
-  hs-source-dirs:      .
-  exposed-modules:     Omise
-  build-depends:       base >= 4.7 && < 5
-                     , aeson
-                     , bytestring
-                     , http-conduit
-                     , unordered-containers
-                     , text
-  default-language:    Haskell2010
+name:           omise-hs
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/iporsut/omise-hs>
+homepage:       https://github.com/iporsut/omise-hs#readme
+bug-reports:    https://github.com/iporsut/omise-hs/issues
+author:         Weerasak Chongnguluam
+maintainer:     singpor@gmail.com
+build-type:     Simple
+cabal-version:  >= 1.10
+extra-source-files:
+    README.md
 
 source-repository head
-  type:     git
+  type: git
   location: https://github.com/iporsut/omise-hs
+
+library
+  exposed-modules:
+      Omise
+  other-modules:
+      Paths_omise_hs
+  hs-source-dirs:
+      ./.
+  build-depends:
+      aeson
+    , base >=4.7 && <6
+    , bytestring
+    , http-conduit
+    , text
+    , unordered-containers
+  default-language: Haskell2010
