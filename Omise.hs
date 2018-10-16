@@ -29,6 +29,7 @@ import Data.Text.Lazy (toStrict)
 import Data.Char (toUpper)
 import Data.Maybe (fromJust)
 import Data.String (fromString)
+import Data.Function ((&))
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Network.HTTP.Simple
   ( Response
@@ -42,9 +43,6 @@ import Data.ByteString.Lazy.Char8 (putStrLn)
 import System.Environment (getEnv)
 import qualified Data.ByteString.Lazy as LBS (ByteString)
 import qualified Data.HashMap.Strict as M (lookup)
-
-(|>) :: a -> (a -> b) -> b
-(|>) = flip ($)
 
 vaultBaseEnv :: MonadIO m => m String
 vaultBaseEnv = liftIO $ getEnv "VAULT_BASE_URL"
@@ -106,10 +104,10 @@ instance ToJSON ChargeReq where
 
 postAPI :: (MonadIO m, ToJSON a) => String -> String -> a -> m (Response LBS.ByteString)
 postAPI url key body = fromString ("POST " ++ url)
-                    |> setRequestHeaders [("Accept", "application/json"), ("Content-Type", "application/json")]
-                    |> setRequestBasicAuth (fromString key) ""
-                    |> setRequestBodyJSON body
-                    |> httpLBS
+                    & setRequestHeaders [("Accept", "application/json"), ("Content-Type", "application/json")]
+                    & setRequestBasicAuth (fromString key) ""
+                    & setRequestBodyJSON body
+                    & httpLBS
 
 extractTokenID :: Response LBS.ByteString -> Text
 extractTokenID respLBS = tokenID
@@ -121,14 +119,14 @@ createToken :: MonadIO m => TokenReq -> m (Response LBS.ByteString)
 createToken req = do
   vaultBase <- vaultBaseEnv
   livePKey <- livePKeyEnv
-  req |> postAPI (vaultBase <> "/tokens") livePKey
+  req & postAPI (vaultBase <> "/tokens") livePKey
 
 createCharge :: MonadIO m => ChargeReq -> Response LBS.ByteString -> m (Response LBS.ByteString)
 createCharge req stdin = do
   apiBase <- apiBaseEnv
   liveSKey <- liveSKeyEnv
   let tokenID = extractTokenID stdin
-  req { chargeReqCard = tokenID } |> postAPI (apiBase <> "/charges") liveSKey
+  req { chargeReqCard = tokenID } & postAPI (apiBase <> "/charges") liveSKey
 
 putResponse :: Response LBS.ByteString -> IO ()
-putResponse respLBS = getResponseBody respLBS |> putStrLn
+putResponse respLBS = getResponseBody respLBS & putStrLn
