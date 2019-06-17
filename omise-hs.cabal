@@ -1,8 +1,10 @@
--- This file has been generated from package.yaml by hpack version 0.28.2.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.1.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ee2f26f152a9a2d6909df2b7fea95e8cc0662d09bcb74b6f8ba29c7b09aab06e
+-- hash: e6a5168aeed7a1078052feaf1b85b0eb7a55d9aed33a273443e407d3777c5967
 
 name:           omise-hs
 version:        0.1.0.0
@@ -12,7 +14,6 @@ bug-reports:    https://github.com/iporsut/omise-hs/issues
 author:         Weerasak Chongnguluam
 maintainer:     singpor@gmail.com
 build-type:     Simple
-cabal-version:  >= 1.10
 extra-source-files:
     README.md
 

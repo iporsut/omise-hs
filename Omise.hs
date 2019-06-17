@@ -30,7 +30,6 @@ import Data.Char (toUpper)
 import Data.Maybe (fromJust)
 import Data.String (fromString)
 import Data.Function ((&))
-import Control.Monad.IO.Class (MonadIO, liftIO)
 import Network.HTTP.Simple
   ( Response
   , setRequestHeaders
@@ -44,17 +43,17 @@ import System.Environment (getEnv)
 import qualified Data.ByteString.Lazy as LBS (ByteString)
 import qualified Data.HashMap.Strict as M (lookup)
 
-vaultBaseEnv :: MonadIO m => m String
-vaultBaseEnv = liftIO $ getEnv "VAULT_BASE_URL"
+vaultBaseEnv :: IO String
+vaultBaseEnv = getEnv "VAULT_BASE_URL"
 
-apiBaseEnv :: MonadIO m => m String
-apiBaseEnv = liftIO $ getEnv "API_BASE_URL"
+apiBaseEnv :: IO String
+apiBaseEnv = getEnv "API_BASE_URL"
 
-livePKeyEnv :: MonadIO m => m String
-livePKeyEnv = liftIO $ getEnv "PKEY"
+livePKeyEnv :: IO String
+livePKeyEnv = getEnv "PKEY"
 
-liveSKeyEnv :: MonadIO m => m String
-liveSKeyEnv = liftIO $ getEnv "SKEY"
+liveSKeyEnv :: IO String
+liveSKeyEnv = getEnv "SKEY"
 
 data Card = Card
   { cardName            :: Text
@@ -102,7 +101,7 @@ instance ToJSON ChargeReq where
     where _ .=? Nothing = mempty -- omitNothing
           k .=? v       = k .= v
 
-postAPI :: (MonadIO m, ToJSON a) => String -> String -> a -> m (Response LBS.ByteString)
+postAPI :: ToJSON a => String -> String -> a -> IO (Response LBS.ByteString)
 postAPI url key body = fromString ("POST " ++ url)
                     & setRequestHeaders [("Accept", "application/json"), ("Content-Type", "application/json")]
                     & setRequestBasicAuth (fromString key) ""
@@ -115,13 +114,13 @@ extractTokenID respLBS = tokenID
         objBody = fromJust $ decodedBody
         decodedBody = decode $ getResponseBody respLBS :: Maybe Object
 
-createToken :: MonadIO m => TokenReq -> m (Response LBS.ByteString)
+createToken :: TokenReq -> IO (Response LBS.ByteString)
 createToken req = do
   vaultBase <- vaultBaseEnv
   livePKey <- livePKeyEnv
   req & postAPI (vaultBase <> "/tokens") livePKey
 
-createCharge :: MonadIO m => ChargeReq -> Response LBS.ByteString -> m (Response LBS.ByteString)
+createCharge :: ChargeReq -> Response LBS.ByteString -> IO (Response LBS.ByteString)
 createCharge req stdin = do
   apiBase <- apiBaseEnv
   liveSKey <- liveSKeyEnv
