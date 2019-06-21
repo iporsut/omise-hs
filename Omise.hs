@@ -62,7 +62,7 @@ data Card = Card
   , cardExpirationYear  :: Int
   , cardCity            :: Text
   , cardPostalCode      :: Int
-  , cardSecurityCode    :: Int
+  , cardSecurityCode    :: Text
   } deriving (Generic, Eq, Show)
 
 instance ToJSON Card where
